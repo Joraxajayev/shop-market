@@ -1,3 +1,4 @@
+// const savedUser = localStorage.getItem('user');
 const initialState = {
   name: "",
   email: "",
@@ -6,11 +7,13 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_USER":
-      return {
+      const newState = {
         ...state,
         name: action.payload.name,
         email: action.payload.email,
       };
+      // localStorage.setItem('user', JSON.stringify(newState));
+      return newState;
     default:
       return state;
   }
