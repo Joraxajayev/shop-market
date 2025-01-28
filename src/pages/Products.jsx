@@ -87,7 +87,11 @@ function Products() {
 
                 <div className="product-details">
                   <h5 className="product-title">{product.name}</h5>
-                  <p className="product-description">{product.description}</p>
+                  <p className="product-description">
+                    {product.description.length > 100
+                      ? product.description.substring(0, 100) + "..."
+                      : product.description}
+                  </p>
                   <div className="product-footer">
                     <span className="product-price">${product.price}</span>
                     <button
@@ -97,10 +101,9 @@ function Products() {
                         e.target.style.color = "white";
                       }}
                       onMouseLeave={(e) => {
-                        e.target.style.background = "transparent";
+                        e.target.style.background = "white";
                         e.target.style.color = "#6366f1";
                       }}>
-                      <i className="bi bi-cart-plus"></i>
                       Add to Cart
                     </button>
                   </div>
