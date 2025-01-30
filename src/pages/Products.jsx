@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts, likeProduct } from "../store/productsReducer.js";
+import { fetchProducts } from "../store/productsReducer.js";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "../styles/main.css";
 
 function Products() {
   const dispatch = useDispatch();
-  const { items, status, likedProducts } = useSelector(
-    (state) => state.products
-  );
+  const navigate = useNavigate();
+  const { items, status } = useSelector((state) => state.products);
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -18,93 +17,60 @@ function Products() {
     }
   }, [status, dispatch]);
 
-  const handleLike = (id) => {
-    dispatch(likeProduct(id));
+  const handleDetails = (id) => {
+    navigate(`/product/${id}`);
   };
 
   return (
-    <div className="products-container">
-      <header className="products-header">
-        <div className="header-content">
-          <h4 className="welcome-text">Welcome, {user.name}!</h4>
-          <div className="user-avatar">
-            <i
-              className="bi bi-person-circle fs-4"
-              style={{ color: "white" }}></i>
+    <div className="container-fluid">
+      <nav className="navbar navbar-dark bg-primary mb-4">
+        <div className="container">
+          <span className="navbar-brand">Welcome, {user.name}!</span>
+          <div className="ms-auto">
+            <i className="bi bi-person-circle fs-4 text-white"></i>
           </div>
         </div>
-      </header>
+      </nav>
 
-      <div className="main-content">
-        <div className="section-title text-center mb-5">
-          <h1 className="title">Discover Amazing Products</h1>
-          <p className="subtitle">Find what you love and love what you find</p>
+      <div className="container">
+        <div className="text-center mb-5">
+          <h1 className="display-4">Discover Amazing Products</h1>
+          <p className="lead text-muted">Find what you love and love what you find</p>
         </div>
 
         {status === "loading" && (
-          <div className="loading-spinner">
-            <div
-              className="spinner-grow"
-              style={{ color: "#6366f1" }}
-              role="status">
+          <div className="d-flex justify-content-center">
+            <div className="spinner-grow text-primary" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
           </div>
         )}
 
         {status === "succeeded" && (
-          <div className="products-grid">
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {items.map((product) => (
-              <div key={product.id} className="product-card">
-                <div
-                  className="product-image-container"
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.transform = "translateY(-5px)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.transform = "translateY(0)")
-                  }>
+              <div key={product.id} className="col">
+                <div className="card h-100 shadow-sm">
                   <img
-                    src={product.image}
-                    alt={product.name}
-                    className="product-image"
+                    src={product.thumbnail}
+                    alt={product.title}
+                    className="card-img-top"
+                    style={{ height: "200px", objectFit: "cover" }}
                   />
-                  <button
-                    onClick={() => handleLike(product.id)}
-                    className={`like-button ${
-                      likedProducts[product.id] ? "liked" : ""
-                    }`}
-                    disabled={likedProducts[product.id]}>
-                    <i
-                      className={`bi ${
-                        likedProducts[product.id] ? "bi-heart-fill" : "bi-heart"
-                      }`}></i>
-                    {product.likes > 0 && (
-                      <span className="likes-count">{product.likes}</span>
-                    )}
-                  </button>
-                </div>
-
-                <div className="product-details">
-                  <h5 className="product-title">{product.name}</h5>
-                  <p className="product-description">
-                    {product.description.length > 100
-                      ? product.description.substring(0, 100) + "..."
-                      : product.description}
-                  </p>
-                  <div className="product-footer">
-                    <span className="product-price">${product.price}</span>
+                  <div className="card-body">
+                    <h5 className="card-title">{product.title}</h5>
+                    <p className="card-text text-muted">
+                      {product.description.length > 100
+                        ? product.description.substring(0, 100) + "..."
+                        : product.description}
+                    </p>
+                  </div>
+                  <div className="card-footer bg-white d-flex justify-content-between align-items-center">
+                    <span className="h5 mb-0 text-primary">${product.price}</span>
                     <button
-                      className="add-to-cart-button"
-                      onMouseEnter={(e) => {
-                        e.target.style.background = "#6366f1";
-                        e.target.style.color = "white";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.background = "white";
-                        e.target.style.color = "#6366f1";
-                      }}>
-                      Add to Cart
+                      className="btn btn-outline-primary"
+                      onClick={() => handleDetails(product.id)}>
+                      Details
                     </button>
                   </div>
                 </div>

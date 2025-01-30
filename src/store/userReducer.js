@@ -1,4 +1,3 @@
-// const savedUser = localStorage.getItem('user');
 const initialState = {
   name: "",
   email: "",
@@ -12,7 +11,6 @@ const userReducer = (state = initialState, action) => {
         name: action.payload.name,
         email: action.payload.email,
       };
-      // localStorage.setItem('user', JSON.stringify(newState));
       return newState;
     default:
       return state;
@@ -21,7 +19,7 @@ const userReducer = (state = initialState, action) => {
 
 export const setUser = (user) => ({
   type: "SET_USER",
-  payload: user,
+  payload: user
 });
 
 export default userReducer;

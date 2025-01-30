@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import Register from "./pages/Register";
 import Products from "./pages/Products";
+import ProductDetails from "./pages/ProductDetails";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -19,6 +20,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Products />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/product/:id"
+            element={
+              <ProtectedRoute>
+                <ProductDetails />
               </ProtectedRoute>
             }
           />
